@@ -3,17 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>장고 북마크 리스트</title>
+    <style>
+        #tbl {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 90%;
+            margin: auto;
+        }
+
+        #tbl td, #tbl th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        #tbl tr:nth-child(even){background-color: #f2f2f2;}
+
+        #tbl tr:hover {background-color: #ddd;}
+
+        #tbl th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<div id="content">
-
-    <h1>바로가기 모음</h1>
-
-    <ul>
+    <div id="content">
+        <h1>바로가기 모음</h1>
+        {% if request.path == "/bookmark_t_CBV/" %}
+            <p>{{request.path}} => views.BookmarkLV => bookmark_list.html</p>
+            <!--표 형식 스타일-->
+            <table id="tbl" >
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>url</th>
+                </tr>
+                <tr>
+                    <td>{{bookmark.id}}</td>
+                    <td>{{bookmark.title}}</td>
+                    <td>
+                        {% for bookmark in object_list %}
+                        <a href="{% url 'detail' bookmark.id %}">
+                                {{ bookmark.url }}
+                        </a>
+                    </td>
+                </tr>
+             {% endfor %}
+         </table>
+    {% else %}
+        <p>{{request.path}} => views.BookmarkLV => bookmark_list.html</p>
+<!--원래 교과서 스타일-->
+        <ul>
         {% for bookmark in object_list %}
-            <li><a href="{% url 'detail' bookmark.id %}">{{ bookmark }}</a></li>
+            <li>
+            <a href="{% url 'detail' bookmark.id %}">
+            {{ bookmark }}
+            </a>
+            </li>
         {% endfor %}
-    </ul>
-</div>
+        </ul>
+        {% endif %}
+    </div>
 </body>
 </html>
